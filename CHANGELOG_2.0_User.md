@@ -22,8 +22,8 @@ Edit Honey Tree encounter groups, and species.
 ### Pickup Table Editor
 Edit the item table for the Pickup ability: common items, rare items, and activation odds.
 
-### Hidden Items Editor *(HGSS only)*
-Edit hidden item locations: item ID, quantity, and associated script. Add and remove entries up to the maximum capacity.
+### Hidden Items Editor *(HGSS and Platinum)*
+Edit hidden item locations: item ID, quantity, and associated script. Add and remove entries up to the maximum capacity. Each entry shows the maps whose hidden item spawnables use it (double-click to open the map), and entries nothing uses, script IDs in the table twice and spawnables whose ID has no entry are flagged. The list can be filtered by item name or script ID. The table is found automatically, so it works on SoulSilver and other regions too, though only US HeartGold and US Platinum have been checked.
 
 ### Trainer Battle Message Editor
 Edit trainer pre-battle, defeat, and post-battle dialogue. Supports all 21 message trigger types and double battle messages. Renders text using the actual Pokémon DS font.

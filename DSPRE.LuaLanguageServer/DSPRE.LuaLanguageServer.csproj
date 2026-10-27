@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>dspre-lua-ls</AssemblyName>
+    <RootNamespace>DSPRE.LuaLanguageServer</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="DSPRE.Tests" />
+    <ProjectReference Include="..\DSPRE.Core\DSPRE.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,35 @@
+{
+  "name": "dspre-lua",
+  "displayName": "DSPRE Lua Scripts",
+  "description": "Error checking, completion, hover, signature help, go to definition and formatting for the Lua scripts of a DSPRE project.",
+  "version": "0.1.0",
+  "publisher": "dspre",
+  "engines": { "vscode": "^1.82.0" },
+  "categories": ["Programming Languages", "Linters", "Formatters"],
+  "activationEvents": ["workspaceContains:**/expanded/scripts/global.lua", "onLanguage:lua"],
+  "main": "./extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "DSPRE Lua",
+      "properties": {
+        "dspreLua.server.command": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["dspre-lua-ls"],
+          "markdownDescription": "Command that starts the language server, e.g. `[\"dotnet\", \"/path/to/dspre-lua-ls.dll\"]`. The default needs `dspre-lua-ls` on the PATH."
+        },
+        "dspreLua.server.databases": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Folder with DSPRE's built-in script command databases (`*_scrcmd_database.json`). Empty: the server looks next to itself and in DSPRE's data folder. A project's own database always wins."
+        }
+      }
+    },
+    "commands": [
+      { "command": "dspreLua.restartServer", "title": "DSPRE Lua: Restart Language Server" }
+    ]
+  },
+  "scripts": { "package": "vsce package" },
+  "dependencies": { "vscode-languageclient": "9.0.1" },
+  "devDependencies": { "@vscode/vsce": "3.2.1" }
+}

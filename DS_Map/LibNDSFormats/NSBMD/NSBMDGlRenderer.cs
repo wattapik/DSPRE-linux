@@ -1146,6 +1146,94 @@ namespace LibNDSFormats.NSBMD {
 
 
 		/// <summary>
+		/// Decodes a single material's texture into an RGBA Bitmap, using exactly the same per-format
+		/// pixel decode as MakeTexture's OpenGL upload path below (formats 0-7, including the 4x4-texel
+		/// compressed format's 4 interpolation modes via convert_4x4texel_b). The only difference from
+		/// MakeTexture is that this returns a Bitmap instead of calling glTexImage2D, for callers that
+		/// need correctly-decoded texture pixels without a live GL context - e.g. exporting them as
+		/// standalone image files for a different renderer to consume, where that renderer's own
+		/// decode of the same DS-specific formats (particularly the 4x4-compressed format, the most
+		/// intricate one) may not exactly match this already-proven implementation.
+		/// </summary>
+		public System.Drawing.Bitmap DecodeMaterialToBitmap(NSBMDMaterial mat) {
+			int pixelnum = mat.width * mat.height;
+			var image = new RGBA[pixelnum];
+
+			switch (mat.format) {
+				// A3I5 Translucent Texture (3bit Alpha, 5bit Color Index)
+				case 1:
+					for (int j = 0; j < pixelnum; j++) {
+						int index = mat.texdata[j] & 0x1f;
+						int alpha = (mat.texdata[j] >> 5);
+						alpha = ((alpha * 4) + (alpha / 2)) * 8;
+						image[j] = mat.paldata[index];
+						image[j].A = (byte)alpha;
+					}
+					break;
+				// 4-Color Palette Texture
+				case 2:
+					if (mat.color0 != 0) { mat.paldata[0] = RGBA.Transparent; }
+					for (int j = 0; j < pixelnum; j++) {
+						uint index = mat.texdata[j / 4];
+						index = (index >> ((j % 4) << 1)) & 3;
+						image[j] = mat.paldata[index];
+					}
+					break;
+				// 16-Color Palette Texture
+				case 3:
+					if (mat.color0 != 0) { mat.paldata[0] = RGBA.Transparent; }
+					for (int j = 0; j < pixelnum; j++) {
+						var matindex = j / 2;
+						if (mat.texdata.Length < matindex) continue;
+						int index = mat.texdata[matindex];
+						index = (index >> ((j % 2) << 2)) & 0x0f;
+						if (mat.paldata is null) continue;
+						if (index < 0 || index >= mat.paldata.Length) continue;
+						if (j < 0 || j >= pixelnum) continue;
+						image[j] = mat.paldata[index];
+					}
+					break;
+				// 256-Color Palette Texture
+				case 4:
+					if (mat.color0 != 0) { mat.paldata[0] = RGBA.Transparent; }
+					for (int j = 0; j < pixelnum; j++) {
+						image[j] = mat.paldata[mat.texdata[j]];
+					}
+					break;
+				// 4x4-Texel Compressed Texture
+				case 5:
+					convert_4x4texel_b(mat.texdata, mat.width, mat.height, mat.spdata, mat.paldata, image);
+					break;
+				// A5I3 Translucent Texture (5bit Alpha, 3bit Color Index)
+				case 6:
+					for (int j = 0; j < pixelnum; j++) {
+						int index = mat.texdata[j] & 0x7;
+						int alpha = (mat.texdata[j] >> 3);
+						alpha *= 8;
+						image[j] = mat.paldata[index];
+						image[j].A = (byte)alpha;
+					}
+					break;
+				// Direct Color Texture
+				case 7:
+					for (int j = 0; j < pixelnum; j++) {
+						image[j] = RGBA.fromColor(Tinke.Convertir.BGR555ToColor(mat.texdata[j * 2], mat.texdata[j * 2 + 1]));
+						ushort p = (ushort)(mat.texdata[j * 2] + (mat.texdata[j * 2 + 1] << 8));
+						image[j].A = (byte)(((p & 0x8000) != 0) ? 0xff : 0);
+					}
+					break;
+				default:
+					return new System.Drawing.Bitmap(System.Math.Max(mat.width, 1), System.Math.Max(mat.height, 1));
+			}
+
+			var bitmap = new System.Drawing.Bitmap(mat.width, mat.height);
+			for (int k = 0; k < image.Length; ++k) {
+				bitmap.SetPixel(k - ((k / mat.width) * mat.width), k / mat.width, image[k].ToColor());
+			}
+			return bitmap;
+		}
+
+		/// <summary>
 		/// Make texture for model.
 		/// </summary>
 		/// <param name="mod">NSBMD Model</param>

@@ -601,51 +601,8 @@ namespace DSPRE
             EditorPanels.mapEditor.mapOpenGlControl.Invalidate();
             EditorPanels.eventEditor.eventOpenGlControl.Invalidate();
 
-            /* Adjust rendering settings */
-            SetupRenderer(ang, dist, elev, perspective, width, height);
-
-            /* Render the map model */
-            mapRenderer.Model = mapFile.mapModel.models[0];
-            Gl.glScalef(mapFile.mapModel.models[0].modelScale / 64, mapFile.mapModel.models[0].modelScale / 64, mapFile.mapModel.models[0].modelScale / 64);
-
-            /* Determine if map textures must be rendered */
-            if (!mapTexturesON)
-            {
-                Gl.glDisable(Gl.GL_TEXTURE_2D);
-            }
-            else
-            {
-                Gl.glEnable(Gl.GL_TEXTURE_2D);
-            }
-
-            mapRenderer.RenderModel("", ani, aniframeS, aniframeS, aniframeS, aniframeS, aniframeS, ca, false, -1, 0.0f, 0.0f, dist, elev, ang, true, tp, mapFile.mapModel); // Render map model
-
-            if (!hideBuildings)
-            {
-                if (buildingTexturesON)
-                {
-                    Gl.glEnable(Gl.GL_TEXTURE_2D);
-                }
-                else
-                {
-                    Gl.glDisable(Gl.GL_TEXTURE_2D);
-                }
-
-                for (int i = 0; i < mapFile.buildings.Count; i++)
-                {
-                    NSBMD file = mapFile.buildings[i].NSBMDFile;
-                    if (file is null)
-                    {
-                        AppLogger.Warn("Null building can't be rendered");
-                    }
-                    else
-                    {
-                        buildingsRenderer.Model = file.models[0];
-                        ScaleTranslateRotateBuilding(mapFile.buildings[i]);
-                        buildingsRenderer.RenderModel("", ani, aniframeS, aniframeS, aniframeS, aniframeS, aniframeS, ca, false, -1, 0.0f, 0.0f, dist, elev, ang, true, tp, file);
-                    }
-                }
-            }
+            var renderer = new DSPRE.Rendering.LegacyMap3DRenderer { HideBuildings = hideBuildings };
+            renderer.Render(mapFile, ang, dist, elev, perspective, width, height, mapTexturesON, buildingTexturesON);
         }
 
         public static Bitmap GrabMapScreenshot(int width, int height)

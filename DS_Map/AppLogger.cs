@@ -47,6 +47,11 @@ namespace DSPRE
             if (level < MinimumLevel)
                 return;
 
+            if (string.IsNullOrEmpty(_logFilePath))
+            {
+                _logFilePath = Path.Combine(Path.GetTempPath(), "dspre-application.log");
+            }
+
             string timestamped = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] [{level.ToString().ToUpper()}] {message}";
 
             lock (_fileLock)

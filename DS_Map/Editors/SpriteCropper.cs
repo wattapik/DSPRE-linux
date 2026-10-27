@@ -48,7 +48,7 @@ namespace DSPRE.Editors
             SuspendLayout();
             label1.AutoSize = true;
             label1.Location = new Point(x_index, y_index);
-            label1.Font = new Font("Arial", 24, FontStyle.Bold);
+            label1.Font = new System.Drawing.Font("Arial", 24, FontStyle.Bold);
             Controls.Add(label1);
             y_index += (label1.Height + spacing);
 

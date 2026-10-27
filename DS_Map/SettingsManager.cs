@@ -42,7 +42,7 @@ namespace DSPRE
             if (File.Exists(SettingsFile))
             {
                 string json = File.ReadAllText(SettingsFile);
-                Settings = JsonConvert.DeserializeObject<DspreSettings>(json);
+                Settings = JsonConvert.DeserializeObject<DspreSettings>(json) ?? new DspreSettings();
             }
             else
             {

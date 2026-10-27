@@ -18,6 +18,10 @@ using System.Runtime.InteropServices;
 // COM, impostare su true l'attributo ComVisible per tale tipo.
 [assembly: ComVisible(false)]
 
+// The headless bridge applies the ROM Toolbox patches for the cross-platform app, using the patch
+// data (ToolboxDB) only this assembly defines.
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("DSPRE.ScriptTool")]
+
 // Se il progetto viene esposto a COM, il GUID seguente verrà utilizzato come ID della libreria dei tipi
 [assembly: Guid("ecda2f2c-23b1-ad81-763c-b9babf9aa8bf")]
 

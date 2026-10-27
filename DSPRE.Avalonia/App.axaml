@@ -1,0 +1,63 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DSPRE.Avalonia.App"
+             RequestedThemeVariant="Dark">
+  <Application.Styles>
+    <FluentTheme />
+    <Style Selector="Window">
+      <Setter Property="Background" Value="#11161C" />
+      <Setter Property="Foreground" Value="#EDF2F7" />
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="#EDF2F7" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Background" Value="#151C23" />
+      <Setter Property="Foreground" Value="#EDF2F7" />
+      <Setter Property="BorderBrush" Value="#40515F" />
+      <Setter Property="SelectionBrush" Value="#39C6B0" />
+    </Style>
+    <Style Selector="TextBox:pointerover">
+      <Setter Property="BorderBrush" Value="#65D8C7" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="#26343F" />
+      <Setter Property="Foreground" Value="#EDF2F7" />
+      <Setter Property="BorderBrush" Value="#40515F" />
+    </Style>
+    <Style Selector="Button:pointerover">
+      <Setter Property="Background" Value="#304552" />
+      <Setter Property="BorderBrush" Value="#65D8C7" />
+    </Style>
+    <Style Selector="Button:pressed">
+      <Setter Property="Background" Value="#1F8F85" />
+    </Style>
+    <!-- The default 1.0 step gives whole-number boxes a decimal ("1.0") after the first click; boxes
+         that take fractions set their own FormatString. -->
+    <Style Selector="NumericUpDown">
+      <Setter Property="FormatString" Value="0" />
+    </Style>
+    <Style Selector="ListBox">
+      <Setter Property="Background" Value="#171E25" />
+      <Setter Property="Foreground" Value="#DDE7EE" />
+      <Setter Property="BorderBrush" Value="#33414D" />
+    </Style>
+    <Style Selector="ListBoxItem">
+      <Setter Property="Foreground" Value="#DDE7EE" />
+      <Setter Property="Padding" Value="10,8" />
+    </Style>
+    <Style Selector="ListBoxItem:pointerover">
+      <Setter Property="Background" Value="#26343F" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="ListBoxItem:selected">
+      <Setter Property="Background" Value="#1F8F85" />
+      <Setter Property="Foreground" Value="#FFFFFF" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Background" Value="#151C23" />
+      <Setter Property="Foreground" Value="#EDF2F7" />
+      <Setter Property="BorderBrush" Value="#40515F" />
+    </Style>
+  </Application.Styles>
+</Application>

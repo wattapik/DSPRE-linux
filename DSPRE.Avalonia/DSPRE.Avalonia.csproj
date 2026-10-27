@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <!-- Kept in step with the legacy app's AssemblyVersion (DS_Map/Properties/AssemblyInfo.cs). -->
+    <Version>2.0.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.12" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12" />
+    <PackageReference Include="OpenTK" Version="4.9.3" />
+    <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0029" />
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DSPRE.Core\DSPRE.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\DS_Map\Tools\**\*" Link="Tools\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\DS_Map\Resources\Graphics\Area Icons\**\*" Link="Resources\Area Icons\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="..\DS_Map\Resources\Graphics\Event Icons\**\*" Link="Resources\Event Icons\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="BuildScriptTool" BeforeTargets="Build" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Exec Command="dotnet publish &quot;$(MSBuildThisFileDirectory)..\DSPRE.ScriptTool\DSPRE.ScriptTool.csproj&quot; --no-restore -p:Configuration=$(Configuration) -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o &quot;$(MSBuildThisFileDirectory)..\DSPRE.ScriptTool\bin\$(Configuration)\net8.0-windows\win-x64\publish&quot;" />
+  </Target>
+  <Target Name="PackageScriptTool" AfterTargets="Build" Condition="'$(DesignTimeBuild)' != 'true'">
+    <MakeDir Directories="$(TargetDir)Tools\ScriptTool" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\DSPRE.ScriptTool\bin\$(Configuration)\net8.0-windows\win-x64\publish\DSPRE.ScriptTool.exe" DestinationFiles="$(TargetDir)Tools\ScriptTool\DSPRE.ScriptTool.exe" SkipUnchangedFiles="false" />
+  </Target>
+</Project>

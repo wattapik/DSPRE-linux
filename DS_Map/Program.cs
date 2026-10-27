@@ -5,7 +5,7 @@ using Velopack;
 
 namespace DSPRE
 {
-    static class Program
+    public static class Program
     {
         public static string DspreDataPath { get; } = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
